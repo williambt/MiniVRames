@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class HoopCheck : MonoBehaviour
 {
@@ -37,9 +36,6 @@ public class HoopCheck : MonoBehaviour
                 _done = true;
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.F1))
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
     void OnTriggerEnter(Collider other)
