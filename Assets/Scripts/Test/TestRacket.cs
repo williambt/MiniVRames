@@ -17,11 +17,9 @@ public class TestRacket : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        float mx = Input.GetAxis("Mouse X") * sensitivity;
-        float my = Input.GetAxis("Mouse Y") * sensitivity;
+        float mx = -Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+        float my = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
 
-        rb.MovePosition(transform.position + new Vector3(mx, my, 0));
-
-        //transform.Translate(new Vector3(mx, my, 0), Space.World);
+        rb.MovePosition(transform.position + new Vector3(0, my, mx));
 	}
 }

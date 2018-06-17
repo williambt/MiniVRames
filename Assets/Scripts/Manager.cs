@@ -15,11 +15,13 @@ public class Manager : MonoBehaviour
 		var deviceIndex = SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost);
 		if (deviceIndex != -1 && SteamVR_Controller.Input (deviceIndex).GetPressDown (Valve.VR.EVRButtonId.k_EButton_A)) 
 		{
-			SteamVR_LoadLevel ("PingPong");
+
+
+            SteamVR_LoadLevel.Begin("PingPong");
 		}
 		if (deviceIndex != -1 && SteamVR_Controller.Input (deviceIndex).GetPressDown (Valve.VR.EVRButtonId.k_EButton_DPad_Down)) 
 		{
-			SteamVR_LoadLevel ("PingPong");
+            SteamVR_LoadLevel.Begin("PingPong");
 		}
 	}
 }
