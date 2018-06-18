@@ -35,11 +35,11 @@ public class ScoreBox : MonoBehaviour
         Bounds wallBounds = GetComponent<BoxCollider>().bounds;
         newPos.x = random.x * wallBounds.size.x;
         newPos.y = random.y * wallBounds.size.y;
-        
         return wallBounds.min + newPos;
     }
     private void OnCollisionEnter(Collision collision)
     {
+        print("Alfafa");
         if (collision.gameObject.name == "Ball")
         {
             ScoreCalculation(collision.contacts[0].point, TargetRef.transform.position);

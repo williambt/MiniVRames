@@ -18,7 +18,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.F1))
         {
-            SteamVR_LoadLevel.Begin("PingPong");
+            SteamVR_LoadLevel.Begin("GabrielTest");
         }
         if (Input.GetKeyDown(KeyCode.F2))
         {
@@ -35,7 +35,7 @@ public class MainMenuManager : MonoBehaviour
                 }
                 else if (c._joint.gameObject.name == "Racket")
                 {
-                    SteamVR_LoadLevel.Begin("PingPong");
+                    SteamVR_LoadLevel.Begin("GabrielTest");
                 }
             }
         }

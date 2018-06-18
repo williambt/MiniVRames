@@ -20,20 +20,30 @@ public class GetControllerInfo : MonoBehaviour
 
 	void Update () 
 	{
-		if (prop == Prop.OBJ) {
-			if (cc.obj == null)
-				_text.text = "null";
-			else
-				_text.text = cc.obj.name;
-		} else if (prop == Prop.JOINT) {
-			if (cc._joint == null)
-				_text.text = "null";
-			else
-				_text.text = cc._joint.connectedBody.name;
-		} else if (prop == Prop.ACCEL) {
-			_text.text = cc.accel.ToString ();
-		} else if(cc.device != null) {
-			_text.text = cc.device.velocity.ToString ();
-		}
+        if (cc != null)
+        {
+            if (prop == Prop.OBJ)
+            {
+                if (cc.obj == null)
+                    _text.text = "null";
+                else
+                    _text.text = cc.obj.name;
+            }
+            else if (prop == Prop.JOINT)
+            {
+                if (cc._joint == null)
+                    _text.text = "null";
+                else
+                    _text.text = cc._joint.connectedBody.name;
+            }
+            else if (prop == Prop.ACCEL)
+            {
+                _text.text = cc.accel.ToString();
+            }
+            else if (cc.device != null)
+            {
+                _text.text = cc.device.velocity.ToString();
+            }
+        }
 	}
 }
