@@ -40,7 +40,7 @@ public class ScoreBox : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         print("Alfafa");
-        if (collision.gameObject.name == "Ball")
+        if (collision.gameObject.tag == "Ball")
         {
             ScoreCalculation(collision.contacts[0].point, TargetRef.transform.position);
             PositionScoreBox(GetRandomPoint());

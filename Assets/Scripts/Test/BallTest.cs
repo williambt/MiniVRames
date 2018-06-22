@@ -5,7 +5,7 @@ using UnityEngine;
 public class BallTest : MonoBehaviour
 {
 
-    Rigidbody rb;
+    //Rigidbody rb;
     Vector3 _startPos;
 
     float _colTimer = 0;
@@ -16,7 +16,7 @@ public class BallTest : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
         _joint = GetComponent<Joint>();
         _startPos = transform.position;
 	}
@@ -42,10 +42,10 @@ public class BallTest : MonoBehaviour
         {
             _colTimer = 0;
         }
-        else if (other.gameObject.name == "Floor")
+        /*else if (other.gameObject.name == "Floor")
         {
             Reset();
-        }
+        }*/
     }
 
     void Reset()

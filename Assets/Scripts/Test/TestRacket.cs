@@ -5,8 +5,9 @@ using UnityEngine;
 public class TestRacket : MonoBehaviour {
 
     public float sensitivity = 0.3f;
-
     Rigidbody rb;
+
+	public Transform follow;
 
     // Use this for initialization
     void Start ()
@@ -20,6 +21,8 @@ public class TestRacket : MonoBehaviour {
         float mx = -Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
         float my = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
 
-        rb.MovePosition(transform.position + new Vector3(0, my, mx));
+		follow.position += new Vector3 (0, my, mx);
+
+		rb.MovePosition (follow.position);
 	}
 }

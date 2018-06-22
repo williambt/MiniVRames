@@ -36,7 +36,7 @@ public class PickupBall : MonoBehaviour
 
     void OnTriggerClick(object sender, ClickedEventArgs e)
     {
-        if (_joint == null)
+		if (_joint == null && _touchingSpawner)
         {
             _joint = Instantiate(ball, spawnPoint.position, spawnPoint.rotation, null).AddComponent<FixedJoint>();
             _joint.connectedBody = _rb;
@@ -70,11 +70,6 @@ public class PickupBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_controller != null && !_controller.HasHandler("TriggerClicked"))
-        {
-            _controller.TriggerClicked += OnTriggerClick;
-            _controller.TriggerUnclicked += OnTriggerUnclick;
-        }
         device = SteamVR_Controller.Input((int)_trackedObj.index);
     }
 
