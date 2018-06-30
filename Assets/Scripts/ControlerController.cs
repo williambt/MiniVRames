@@ -11,113 +11,94 @@ public class ControlerController : MonoBehaviour
     private SteamVR_TrackedObject _trackedObj;
     public FixedJoint _joint = null;
 
-	public float accel = 1f;
+	public float accel = 1.33f;
 	public float step = 0.5f;
 
 	public SteamVR_Controller.Device device;
 	public SteamVR_TrackedController _controller;
 
-	public GameObject eventCue;
+    private bool usingAxis = true;
+    private bool clicked = false;
 
-	bool _event = true;
+    string _axis;
 
     // Use this for initialization
     void Awake ()
     {
+        if (tag == "LeftController")
+            _axis = "LeftTrigger";
+        else if (tag == "RightController")
+            _axis = "RightTrigger";
         _rb = GetComponent<Rigidbody>();
         _trackedObj = GetComponent<SteamVR_TrackedObject>();
-		_controller = GetComponent<SteamVR_TrackedController> ();
-	}	
-
-	void OnTriggerClick(object sender, ClickedEventArgs e)
-	{
-		if(_joint == null && obj != null)
-		{
-			_joint = obj.AddComponent<FixedJoint>();
-			_joint.connectedBody = _rb;
-		}
-		if (_controller != null)
-		{
-			_controller.TriggerClicked += OnTriggerClick;
-			_controller.TriggerUnclicked += OnTriggerUnclick;
-		}
 	}
 
-	void ToggleEvent()
-	{
-		if (_event) 
-		{
-			if (_controller != null) 
-			{
-				_controller.TriggerClicked -= OnTriggerClick;
-				_controller.TriggerUnclicked -= OnTriggerUnclick;
-				eventCue.SetActive (true);
-			}
-		}
-		else 
-		{
-			if (_controller != null)
-			{
-				_controller.TriggerClicked += OnTriggerClick;
-				_controller.TriggerUnclicked += OnTriggerUnclick;
-				eventCue.SetActive (false);
-			}
-		}
-		_event = !_event;
-	}
-
-    void OnTriggerUnclick(object sender, ClickedEventArgs e)
+    void OnTriggerClick()
     {
-        Rigidbody objRB = _joint.gameObject.GetComponent<Rigidbody>();
-
-        DestroyImmediate(_joint);
-        _joint = null;
-
-        var origin = _trackedObj.origin ? _trackedObj.origin : _trackedObj.transform.parent;
-        if (origin != null)
+        if (_joint == null && obj != null)
         {
-            objRB.velocity = origin.TransformVector(device.velocity);
-            objRB.angularVelocity = origin.TransformVector(device.angularVelocity);
+            _joint = obj.AddComponent<FixedJoint>();
+            _joint.connectedBody = _rb;
         }
-        else
+    }
+
+    void OnTriggerUnclick()
+    {
+        if (_joint != null)
         {
-            objRB.velocity = device.velocity;
-            objRB.angularVelocity = device.angularVelocity;
+            Rigidbody objRB = _joint.gameObject.GetComponent<Rigidbody>();
+
+            DestroyImmediate(_joint);
+            _joint = null;
+
+            var origin = _trackedObj.origin ? _trackedObj.origin : _trackedObj.transform.parent;
+            if (origin != null)
+            {
+                objRB.velocity = origin.TransformVector(device.velocity);
+                objRB.angularVelocity = origin.TransformVector(device.angularVelocity);
+            }
+            else
+            {
+                objRB.velocity = device.velocity;
+                objRB.angularVelocity = device.angularVelocity;
+            }
+
+            objRB.velocity *= accel;
+
+            objRB.maxAngularVelocity = objRB.angularVelocity.magnitude;
         }
-
-        objRB.velocity *= accel;
-
-        objRB.maxAngularVelocity = objRB.angularVelocity.magnitude;
     }
 
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
     {
         device = SteamVR_Controller.Input((int)_trackedObj.index);
 		Rigidbody objRB = obj.GetComponent<Rigidbody> ();
-		if (!_event) {
-			if (_joint == null && obj != null && device.GetTouchDown (SteamVR_Controller.ButtonMask.Trigger)) {
-				_joint = obj.AddComponent<FixedJoint> ();
-				_joint.connectedBody = _rb;
-			} else if (_joint != null && device.GetTouchUp (SteamVR_Controller.ButtonMask.Trigger)) {
-				DestroyImmediate (_joint);
-				_joint = null;
-
-				var origin = _trackedObj.origin ? _trackedObj.origin : _trackedObj.transform.parent;
-				if (origin != null) {
-					objRB.velocity = origin.TransformVector (device.velocity);
-					objRB.angularVelocity = origin.TransformVector (device.angularVelocity);
-				} else {
-					objRB.velocity = device.velocity;
-					objRB.angularVelocity = device.angularVelocity;
-				}
-
-				objRB.velocity *= accel;
-
-				objRB.maxAngularVelocity = objRB.angularVelocity.magnitude;
-			}
-		}
-
+        if (usingAxis)
+        {
+            if (Input.GetAxis(_axis) > 0.5f && !clicked)
+            {
+                OnTriggerClick();
+                clicked = true;
+            }
+            else if (clicked && Input.GetAxis(_axis) < 0.5f)
+            {
+                OnTriggerUnclick();
+                clicked = false;
+            }
+        }
+        else
+        {
+            if (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+            {
+                OnTriggerClick();
+            }
+            else if (_joint != null && device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
+            {
+                OnTriggerClick();
+            }
+        }
+        
 		if (Input.GetKeyDown (KeyCode.UpArrow)) 
 		{
 			accel += step;

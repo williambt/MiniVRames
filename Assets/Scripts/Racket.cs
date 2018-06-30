@@ -14,9 +14,10 @@ public class Racket : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
 	{
 		rb.MovePosition (follow.position);
 		rb.MoveRotation (follow.rotation);
+        rb.MoveRotation(rb.rotation * Quaternion.Euler(-90, 0, 0));
 	}
 }

@@ -20,21 +20,18 @@ public class PickupBall : MonoBehaviour
 
     private bool _touchingSpawner = false;
 
+    private bool usingAxis = true;
+    private bool clicked = false;
+
     // Use this for initialization
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _trackedObj = GetComponent<SteamVR_TrackedObject>();
         _controller = GetComponent<SteamVR_TrackedController>();
-
-        if (_controller != null)
-        {
-            _controller.TriggerClicked += OnTriggerClick;
-            _controller.TriggerUnclicked += OnTriggerUnclick;
-        }
     }
 
-    void OnTriggerClick(object sender, ClickedEventArgs e)
+    void OnTriggerClick()
     {
 		if (_joint == null && _touchingSpawner)
         {
@@ -43,7 +40,7 @@ public class PickupBall : MonoBehaviour
         }
     }
 
-    void OnTriggerUnclick(object sender, ClickedEventArgs e)
+    void OnTriggerUnclick()
     {
         Rigidbody objRB = _joint.gameObject.GetComponent<Rigidbody>();
 
@@ -68,9 +65,40 @@ public class PickupBall : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         device = SteamVR_Controller.Input((int)_trackedObj.index);
+
+        if (usingAxis)
+        {
+            if (Input.GetAxis("LeftTrigger") > 0.5f && !clicked)
+            {
+                OnTriggerClick();
+                clicked = true;
+            }
+            else if (clicked && (Input.GetAxis("LeftTrigger") < 0.5f))
+            {
+                OnTriggerUnclick();
+                clicked = false;
+            }
+        }
+        else
+        {
+            if (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+            {
+                OnTriggerClick();
+            }
+            else if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
+            {
+                OnTriggerUnclick();
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            usingAxis = !usingAxis;
+            clicked = false;
+        }
     }
 
     void OnTriggerEnter(Collider other)

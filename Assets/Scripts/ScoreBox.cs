@@ -12,6 +12,8 @@ public class ScoreBox : MonoBehaviour
     public float MinPoints = 10;
     public float MaxDistance = 10;
 
+    public float Score { get; private set; }
+
 	void Start ()
     {
         PositionScoreBox(GetRandomPoint());
@@ -39,7 +41,6 @@ public class ScoreBox : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        print("Alfafa");
         if (collision.gameObject.tag == "Ball")
         {
             ScoreCalculation(collision.contacts[0].point, TargetRef.transform.position);
@@ -79,6 +80,7 @@ public class ScoreBox : MonoBehaviour
     }
     void UpdateScoreboard(int deltaScore)
     {
-        ScoreboardRef.GetComponent<TextMesh>().text = deltaScore.ToString();
+        Score += deltaScore;
+        ScoreboardRef.GetComponent<TextMesh>().text = Score.ToString();
     }
 }
