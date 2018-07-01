@@ -17,7 +17,6 @@ public class Racket : MonoBehaviour {
 	void FixedUpdate () 
 	{
 		rb.MovePosition (follow.position);
-		rb.MoveRotation (follow.rotation);
-        rb.MoveRotation(rb.rotation * Quaternion.Euler(-90, 0, 0));
+		rb.MoveRotation (follow.rotation * Quaternion.Euler(-90, 0, 0));
 	}
 }

@@ -17,7 +17,9 @@ public class SpawnHoop : MonoBehaviour
             Instantiate(hoop, transform.position, transform.rotation, null);
             pressed = true;
         }
-        else if(!(Input.GetAxis("LeftGrip") > 0.5f && Input.GetAxis("RightGrip") > 0.5f))
+        else if (Input.GetAxis("LeftGrip") < 0.5f && Input.GetAxis("RightGrip") < 0.5f && pressed)
+        {
             pressed = false;
+        }
 	}
 }
