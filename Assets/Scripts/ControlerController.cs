@@ -74,44 +74,16 @@ public class ControlerController : MonoBehaviour
     {
         device = SteamVR_Controller.Input((int)_trackedObj.index);
 		Rigidbody objRB = obj.GetComponent<Rigidbody> ();
-        if (usingAxis)
+      
+        if (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
         {
-            if (Input.GetAxis(_axis) > 0.5f && !clicked)
-            {
-                OnTriggerClick();
-                clicked = true;
-            }
-            else if (clicked && Input.GetAxis(_axis) < 0.5f)
-            {
-                OnTriggerUnclick();
-                clicked = false;
-            }
+            OnTriggerClick();
         }
-        else
+        else if (_joint != null && device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
         {
-            if (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
-            {
-                OnTriggerClick();
-            }
-            else if (_joint != null && device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
-            {
-                OnTriggerClick();
-            }
+            OnTriggerClick();
         }
-        
-		if (Input.GetKeyDown (KeyCode.UpArrow)) 
-		{
-			accel += step;
-		}
-		if (Input.GetKeyDown (KeyCode.DownArrow)) 
-		{
-			accel -= step;
-		}
-
-		if(Input.GetKeyDown(KeyCode.Space))
-		{
-
-		}
+       
 
 		if (Input.GetKeyDown(KeyCode.F1))
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);

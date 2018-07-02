@@ -9,16 +9,25 @@ public class BallTest : MonoBehaviour
     float _colTimer = 0;
     public float timeout = 4f;
 
-    Joint _joint;
+    int id = -1;
 
-	// Use this for initialization
-	void Start ()
+    Joint _joint;
+    Rigidbody rigidbodyRef;
+    //idealmente eu faria o audio em uma classe separada, mas precisa ser rapido
+    AudioSource ballSource;
+    public AudioClip bounceClip;
+    public AudioClip tableBounceClip;
+
+    void Start ()
     {
         _joint = GetComponent<Joint>();
         _startPos = transform.position;
+        ballSource = gameObject.AddComponent<AudioSource>();
+        ballSource.clip = bounceClip;
+        ballSource.loop = false;
+        rigidbodyRef = GetComponent<Rigidbody>();
 	}
 	
-	// Update is called once per frame
 	void Update ()
     {
         Time.fixedDeltaTime = 0.002f;
@@ -39,15 +48,35 @@ public class BallTest : MonoBehaviour
         {
             _colTimer = 0;
         }
-        /*else if (other.gameObject.name == "Floor")
-        {
-            Reset();
-        }*/
+        PlaySound(other);
     }
-
     void Reset()
     {
-        //Instantiate(gameObject, _startPos, transform.rotation, null).name = "Ball";
         Destroy(gameObject);
+    }
+    public void SetID(int newId)
+    {
+        id = newId;
+    }
+    public int GetID()
+    {
+        return id;
+    }
+    void PlaySound(Collision other)
+    {
+        float mag = rigidbodyRef.velocity.magnitude;
+        mag = Mathf.Clamp(mag, 0.5f, 1.5f);
+        ballSource.volume = 0.5f * mag;
+        ballSource.pitch = Random.Range(0.9f, 1.1f);
+        if (other.gameObject.name == "Table")
+        {
+            ballSource.clip = tableBounceClip;
+            ballSource.Play();
+        }
+        else
+        {
+            ballSource.clip = bounceClip;
+            ballSource.Play();
+        }
     }
 }
