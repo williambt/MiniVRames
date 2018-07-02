@@ -76,6 +76,7 @@ public class BallTest : MonoBehaviour
         else
         {
             ballSource.clip = bounceClip;
+            ballSource.pitch = Random.Range(0.8f, 1.2f);
             ballSource.Play();
         }
     }

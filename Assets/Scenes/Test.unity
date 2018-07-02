@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1802843, g: 0.22571488, b: 0.30692273, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028481, g: 0.22571546, b: 0.306924, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -872,6 +872,11 @@ Prefab:
       propertyPath: m_Constraints
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114544686111229878, guid: 2085020b480563c4d8e072537e21ed7e,
+        type: 2}
+      propertyPath: bounceClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 9fef54250423bd94ea3374d3c0f9eedd, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2085020b480563c4d8e072537e21ed7e, type: 2}
   m_IsPrefabParent: 0
