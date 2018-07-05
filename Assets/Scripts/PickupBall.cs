@@ -73,15 +73,13 @@ public class PickupBall : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        device = SteamVR_Controller.Input((int)_trackedObj.index);
-
-       
-        if (Input.GetAxis("LeftTrigger") > 0 && !clicked)
+        device = SteamVR_Controller.Input((int)_trackedObj.index);       
+        if (Input.GetAxis("LeftTrigger") > 0.33f && !clicked)
         {
             OnTriggerClick();
             clicked = true;
         }
-        else if (clicked && (Input.GetAxis("LeftTrigger") == 0))
+        else if (clicked && (Input.GetAxis("LeftTrigger") < 0.33f))
         {
             OnTriggerUnclick();
             clicked = false;
