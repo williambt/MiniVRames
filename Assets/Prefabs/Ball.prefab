@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 135707925519192014}
   - component: {fileID: 54525688138108042}
   - component: {fileID: 114544686111229878}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ball
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -57,6 +57,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -112,8 +113,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeout: 100
-  bounceClip: {fileID: 8300000, guid: 4f8aee6e1599f9b48848cb5ae65a786e, type: 3}
+  bounceClip: {fileID: 8300000, guid: 9fef54250423bd94ea3374d3c0f9eedd, type: 3}
   tableBounceClip: {fileID: 8300000, guid: 13ad79618fcc4294b81628dd47521f92, type: 3}
+  maxSpeed: 8
 --- !u!135 &135707925519192014
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -18,8 +18,13 @@ public class BallTest : MonoBehaviour
     public AudioClip bounceClip;
     public AudioClip tableBounceClip;
 
+    public float lastHitTime { get; private set; }
+
+    public float maxSpeed = 10.0f;
+
     void Start ()
     {
+        lastHitTime = Time.time;
         _joint = GetComponent<Joint>();
         _startPos = transform.position;
         ballSource = gameObject.AddComponent<AudioSource>();
@@ -40,6 +45,8 @@ public class BallTest : MonoBehaviour
                 Reset();
             }
         }
+
+        rigidbodyRef.velocity = Vector3.ClampMagnitude(rigidbodyRef.velocity, maxSpeed);
     }
 
     void OnCollisionEnter(Collision other)
@@ -71,10 +78,13 @@ public class BallTest : MonoBehaviour
         if (other.gameObject.name == "Table")
         {
             ballSource.clip = tableBounceClip;
+            ballSource.pitch = Random.Range(0.8f, 1.2f);
             ballSource.Play();
         }
         else
         {
+            if (other.gameObject.name == "Racket")
+                lastHitTime = Time.time;
             ballSource.clip = bounceClip;
             ballSource.pitch = Random.Range(0.8f, 1.2f);
             ballSource.Play();

@@ -13,8 +13,13 @@ public class Racket : MonoBehaviour {
 		rb = GetComponent<Rigidbody> ();
 	}
 	
-	// Update is called once per frame
-	void FixedUpdate () 
+    void Update()
+    {
+        Time.fixedDeltaTime = 0.002f;
+    }
+
+    // Update is called once per frame
+    void FixedUpdate () 
 	{
 		rb.MovePosition (follow.position);
 		rb.MoveRotation (follow.rotation * Quaternion.Euler(-90, 0, 0));
