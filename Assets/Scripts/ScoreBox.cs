@@ -65,8 +65,11 @@ public class ScoreBox : MonoBehaviour
                 multiplier = 1.0f;
             }
 
-            ScoreCalculation(collision.contacts[0].point, TargetRef.transform.position);
-            PositionScoreBox(GetRandomPoint());
+            if (!PingPongManager.Instance.timeUp)
+            {
+                ScoreCalculation(collision.contacts[0].point, TargetRef.transform.position);
+                PositionScoreBox(GetRandomPoint());
+            }
         }
     }
     void ScoreCalculation(Vector3 hitPos, Vector3 scoreCenterPos)

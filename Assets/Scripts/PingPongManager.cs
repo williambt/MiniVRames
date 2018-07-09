@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PingPongManager : MonoBehaviour
 {
+    public static PingPongManager Instance { get; private set; }
+
     public TextMesh clockRef;
     public PickupBall ballSpawnerRef;
 
@@ -24,6 +26,11 @@ public class PingPongManager : MonoBehaviour
     bool blinkEntireDisplay = false;
 
     public bool timeUp { get; private set; }
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
 	void Start ()
     {
