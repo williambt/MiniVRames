@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class BallTest : MonoBehaviour
@@ -21,9 +22,30 @@ public class BallTest : MonoBehaviour
     public float lastHitTime { get; private set; }
 
     public float maxSpeed = 10.0f;
+    static private bool fileRead = false;
+    static private float readSpeed;
 
     void Start ()
     {
+        if (!fileRead)
+        {
+            try
+            {
+                using (StreamReader sr = new StreamReader(Application.dataPath + "\\ballSpeed"))
+                {
+                    string line = sr.ReadToEnd();
+                    maxSpeed = float.Parse(line);
+                    fileRead = true;
+                    readSpeed = maxSpeed;
+                }
+            }
+            catch
+            {
+                Application.Quit();
+            }
+        }
+        else
+            maxSpeed = readSpeed;
         lastHitTime = Time.time;
         _joint = GetComponent<Joint>();
         _startPos = transform.position;
