@@ -15,14 +15,17 @@ public class TestRacket : MonoBehaviour {
         rb = GetComponent<Rigidbody>();		
 	}
 	
+	void Update()
+	{
+		Time.fixedDeltaTime = 0.002f;
+	}
+	
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        float mx = -Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
-        float my = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        float mx = -Input.GetAxis("Mouse X") * sensitivity * Time.fixedDeltaTime;
+        float my = Input.GetAxis("Mouse Y") * sensitivity * Time.fixedDeltaTime;
 
 		follow.position += new Vector3 (0, my, mx);
-
-		rb.MovePosition (follow.position);
 	}
 }

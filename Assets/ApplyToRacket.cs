@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class Racket : MonoBehaviour {
+public class ApplyToRacket : MonoBehaviour
+{
+    public FixedJoint racket;
 
-	Rigidbody rb;
-	public Transform follow;
-    public float offset = 90f;
+    private float offset;
 
 	// Use this for initialization
-	void Start () 
-	{
+	void Start ()
+    {
         try
         {
             using (StreamReader sr = new StreamReader(Application.dataPath + "\\offset"))
@@ -25,18 +25,14 @@ public class Racket : MonoBehaviour {
             Application.Quit();
         }
 
-		rb = GetComponent<Rigidbody> ();
+        racket.transform.rotation *= Quaternion.Euler(offset, 0, 0);
+        racket.transform.position = transform.position;
+        racket.connectedBody = GetComponent<Rigidbody>();
 	}
 	
-    void Update()
+	// Update is called once per frame
+	void Update ()
     {
-        Time.fixedDeltaTime = 0.002f;
-    }
-
-    // Update is called once per frame
-    void FixedUpdate () 
-	{
-		rb.MovePosition (follow.position);
-		rb.MoveRotation (follow.rotation * Quaternion.Euler(offset, 0, 0));
+		
 	}
 }

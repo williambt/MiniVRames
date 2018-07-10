@@ -12,6 +12,10 @@ public class ScoreBox : MonoBehaviour
     public float MinPoints = 10;
     public float MaxDistance = 10;
 
+    int lastID = -1;
+    int consecutiveHits = 0;
+    float multiplier = 1.0f;
+    int ceiling = 4;
     public float Score { get; private set; }
 
 	void Start ()
@@ -43,8 +47,29 @@ public class ScoreBox : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ball")
         {
-            ScoreCalculation(collision.contacts[0].point, TargetRef.transform.position);
-            PositionScoreBox(GetRandomPoint());
+            if (collision.gameObject.GetComponent<BallTest>().GetID() == lastID) // se for a mesma bola que bate adiciona a um multiplicador
+            {
+                consecutiveHits++;
+                Debug.Log(consecutiveHits.ToString());
+                if (consecutiveHits > ceiling)
+                {
+                    ceiling += ceiling;
+                    multiplier += 0.5f;
+                }
+            }
+            else
+            {
+                lastID = collision.gameObject.GetComponent<BallTest>().GetID();
+                ceiling = 4;
+                consecutiveHits = 1;
+                multiplier = 1.0f;
+            }
+
+            if (!PingPongManager.Instance.timeUp)
+            {
+                ScoreCalculation(collision.contacts[0].point, TargetRef.transform.position);
+                PositionScoreBox(GetRandomPoint());
+            }
         }
     }
     void ScoreCalculation(Vector3 hitPos, Vector3 scoreCenterPos)
@@ -74,6 +99,7 @@ public class ScoreBox : MonoBehaviour
             {
                 score = MaxPoints / 5;
             }
+            score *= multiplier;
         }
         UpdateScoreboard((int)score);
 
@@ -82,5 +108,9 @@ public class ScoreBox : MonoBehaviour
     {
         Score += deltaScore;
         ScoreboardRef.GetComponent<TextMesh>().text = Score.ToString();
+    }
+    void UpdateMultiplier()
+    {
+
     }
 }

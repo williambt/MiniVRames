@@ -20,8 +20,11 @@ public class PickupBall : MonoBehaviour
 
     private bool _touchingSpawner = false;
 
-    private bool usingAxis = true;
     private bool clicked = false;
+
+    public static int nOfBallsSpawned = 0;
+
+    public PingPongManager manager;
 
     // Use this for initialization
     void Awake()
@@ -37,6 +40,9 @@ public class PickupBall : MonoBehaviour
         {
             _joint = Instantiate(ball, spawnPoint.position, spawnPoint.rotation, null).AddComponent<FixedJoint>();
             _joint.connectedBody = _rb;
+            nOfBallsSpawned++;
+            manager.StartClock();
+            _joint.gameObject.GetComponent<BallTest>().SetID(nOfBallsSpawned); // da um ID para a bola spawnada pra detectar se é a mesma bola que bate no scoreTarget
         }
     }
 
@@ -67,36 +73,15 @@ public class PickupBall : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        device = SteamVR_Controller.Input((int)_trackedObj.index);
-
-        if (usingAxis)
+        device = SteamVR_Controller.Input((int)_trackedObj.index);       
+        if (Input.GetAxis("LeftTrigger") > 0.33f && !clicked)
         {
-            if (Input.GetAxis("LeftTrigger") > 0.5f && !clicked)
-            {
-                OnTriggerClick();
-                clicked = true;
-            }
-            else if (clicked && (Input.GetAxis("LeftTrigger") < 0.5f))
-            {
-                OnTriggerUnclick();
-                clicked = false;
-            }
+            OnTriggerClick();
+            clicked = true;
         }
-        else
+        else if (clicked && (Input.GetAxis("LeftTrigger") < 0.33f))
         {
-            if (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
-            {
-                OnTriggerClick();
-            }
-            else if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
-            {
-                OnTriggerUnclick();
-            }
-        }
-
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            usingAxis = !usingAxis;
+            OnTriggerUnclick();
             clicked = false;
         }
     }
